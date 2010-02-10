@@ -3,6 +3,8 @@
 
 ClockWindow::ClockWindow()
 {
+  m_aboutWindow = new AboutWindow();
+
   createActions();
   createTrayIcon();
 
@@ -73,14 +75,18 @@ void ClockWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 
 void ClockWindow::createActions()
 {
+  m_aboutAction = new QAction(tr("&About"), this);
   m_quitAction = new QAction(tr("&Quit"), this);
+
   connect(m_quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+  connect(m_aboutAction, SIGNAL(triggered()), m_aboutWindow, SLOT(show()));
 }
 
 void ClockWindow::createTrayIcon()
 {
   m_trayIconMenu = new QMenu(this);
 
+  m_trayIconMenu->addAction(m_aboutAction);
   m_trayIconMenu->addAction(m_quitAction);
 
   m_trayIcon = new QSystemTrayIcon(this);
