@@ -7,8 +7,8 @@ AboutWindow::AboutWindow()
   m_appName = new QLabel("<h2>Internet Time Widget</h2>");
   m_description =
     new QLabel(tr("A System Tray application that displays the current Internet Time"));
-  m_creator = new QLabel("Created by <a href='mailto:jeff.parent@gmail.com'>Jeff Parent</a>");
-  m_version = new QLabel(tr("Version 0.0.1"));
+  m_creator = new QLabel("Created by <a href='mailto:jeff.parent@gmail.com'>Jeff Parent</a> and licensed under the GPLv2");
+  m_version = new QLabel(tr("Version 0.0.2"));
 
   m_okButton = new QPushButton(tr("OK"));
 
