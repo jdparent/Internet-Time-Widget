@@ -26,7 +26,7 @@
 !insertmacro MUI_PAGE_WELCOME
 ; License page
 !define MUI_LICENSEPAGE_RADIOBUTTONS
-!insertmacro MUI_PAGE_LICENSE "..\License.txt"
+!insertmacro MUI_PAGE_LICENSE "..\COPYING"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Instfiles page
