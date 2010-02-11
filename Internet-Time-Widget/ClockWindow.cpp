@@ -8,29 +8,31 @@ ClockWindow::ClockWindow()
   createActions();
   createTrayIcon();
 
-  connect(
-    m_trayIcon,
-    SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-    this,
-    SLOT(iconActivate(QSystemTrayIcon::ActivationReason)));
-
-  setIcon();
+  QVBoxLayout *mainLayout = new QVBoxLayout;
+  m_lcd = new QLCDNumber(6);
+  m_lcd->setSegmentStyle(QLCDNumber::Flat);
+  mainLayout->addWidget(m_lcd);
+  setLayout(mainLayout);
+  setWindowTitle(tr("Internet Time"));
+  setFixedHeight(sizeHint().height());
 
   m_trayIcon->show();
-
-  m_ticks = 0;
 
   m_timerId = startTimer(500);
 }
 
 void ClockWindow::setVisible(bool visible)
 {
-  QDialog::setVisible(false);
+  QDialog::setVisible(visible);
 }
 
 void ClockWindow::closeEvent(QCloseEvent *event)
 {
-  ;
+  if (m_trayIcon->isVisible())
+  {
+    hide();
+    event->ignore();
+  }
 }
 
 float ClockWindow::getBeatTime()
@@ -59,26 +61,37 @@ void ClockWindow::timerEvent(QTimerEvent *event)
 {
   if (event->timerId() == m_timerId)
   {
-    m_trayIcon->setToolTip(tr("@%1").arg(getBeatTime()));
-  }
-}
+    float beats = getBeatTime();
 
-void ClockWindow::setIcon()
-{
-  m_trayIcon->setIcon(QIcon(":/images/tray.jpg"));
+    m_trayIcon->setToolTip(tr("@%1").arg(beats));
+    m_lcd->display((double)beats);
+  }
 }
 
 void ClockWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
-  ;
+  switch (reason)
+  {
+    case QSystemTrayIcon::DoubleClick:
+    {
+      show();
+      break;
+    }
+    default:
+    {
+      break;
+    }
+  }
 }
 
 void ClockWindow::createActions()
 {
   m_aboutAction = new QAction(tr("&About"), this);
+  m_restoreAction = new QAction(tr("&Restore"), this);
   m_quitAction = new QAction(tr("&Quit"), this);
 
   connect(m_quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+  connect(m_restoreAction, SIGNAL(triggered()), this, SLOT(show()));
   connect(m_aboutAction, SIGNAL(triggered()), m_aboutWindow, SLOT(show()));
 }
 
@@ -87,8 +100,18 @@ void ClockWindow::createTrayIcon()
   m_trayIconMenu = new QMenu(this);
 
   m_trayIconMenu->addAction(m_aboutAction);
+  m_trayIconMenu->addAction(m_restoreAction);
+  m_trayIconMenu->addSeparator();
   m_trayIconMenu->addAction(m_quitAction);
 
   m_trayIcon = new QSystemTrayIcon(this);
   m_trayIcon->setContextMenu(m_trayIconMenu);
+
+  m_trayIcon->setIcon(QIcon(":/images/tray.jpg"));
+
+  connect(
+    m_trayIcon,
+    SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    this,
+    SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 }

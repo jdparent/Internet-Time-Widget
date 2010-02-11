@@ -3,8 +3,15 @@
 
 #include <QSystemTrayIcon>
 #include <QDialog>
+#include <QLCDNumber>
 
 #include "AboutWindow.h"
+
+QT_BEGIN_NAMESPACE
+class QAction;
+class QLCDNumber;
+class QMenu;
+QT_END_NAMESPACE
 
 class ClockWindow : public QDialog
 {
@@ -22,7 +29,6 @@ protected:
   void timerEvent(QTimerEvent *event);
 
 private slots:
-  void setIcon();
   void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
@@ -30,7 +36,10 @@ private:
   void createTrayIcon();
 
   QAction *m_aboutAction;
+  QAction *m_restoreAction;
   QAction *m_quitAction;
+
+  QLCDNumber *m_lcd;
 
   QSystemTrayIcon *m_trayIcon;
   QMenu *m_trayIconMenu;
@@ -38,7 +47,6 @@ private:
   AboutWindow *m_aboutWindow;
 
   int m_timerId;
-  int m_ticks;
 };
 
 #endif // CLOCKWINDOW_H
