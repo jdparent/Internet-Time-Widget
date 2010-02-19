@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Internet Time Widget"
-!define PRODUCT_VERSION "0.0.2"
+!define PRODUCT_VERSION "0.0.3"
 !define PRODUCT_PUBLISHER "Jeff Parent"
 !define PRODUCT_WEB_SITE "http://www.biffengineering.com"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Internet-Time-Widget.exe"
