@@ -1,5 +1,6 @@
 HEADERS += ClockWindow.h \
-    AboutWindow.h
+    AboutWindow.h \
+    AppVersion.h
 SOURCES += main.cpp \
     ClockWindow.cpp \
     AboutWindow.cpp

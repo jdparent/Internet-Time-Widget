@@ -1,5 +1,6 @@
 #include <QtGui>
 #include "AboutWindow.h"
+#include "AppVersion.h"
 
 AboutWindow::AboutWindow()
 {
@@ -8,7 +9,7 @@ AboutWindow::AboutWindow()
   m_description =
     new QLabel(tr("A System Tray application that displays the current Internet Time"));
   m_creator = new QLabel("Created by <a href='mailto:jeff.parent@gmail.com'>Jeff Parent</a> and licensed under the GPLv2");
-  m_version = new QLabel(tr("Version 0.0.2"));
+  m_version = new QLabel(tr("Version %1").arg(APP_VERSION));
 
   m_okButton = new QPushButton(tr("OK"));
 
