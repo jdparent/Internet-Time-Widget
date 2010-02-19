@@ -8,13 +8,15 @@ ClockWindow::ClockWindow()
   createActions();
   createTrayIcon();
 
-  QVBoxLayout *mainLayout = new QVBoxLayout;
-  m_lcd = new QLCDNumber(6);
-  m_lcd->setSegmentStyle(QLCDNumber::Flat);
-  mainLayout->addWidget(m_lcd);
+  QHBoxLayout *mainLayout = new QHBoxLayout;
+
+  m_beatTime = new QLabel(tr("<h1>%1</h1>").arg(getBeatTimeString(true)));
+  mainLayout->addWidget(m_beatTime, 0, Qt::AlignHCenter);
+
   setLayout(mainLayout);
   setWindowTitle(tr("Internet Time"));
   setFixedHeight(sizeHint().height());
+  setFixedWidth(sizeHint().width() * 1.5);
 
   m_trayIcon->show();
 
@@ -57,14 +59,47 @@ float ClockWindow::getBeatTime()
   return beats;
 }
 
+QString ClockWindow::getBeatTimeString(bool full)
+{
+  QString str('@');
+
+  float beats = getBeatTime();
+
+  int y = beats;
+
+  if (y < 100)
+    str.append("0");
+  if (y < 10)
+    str.append("0");
+
+  str.append(tr("%1").arg(y));
+
+  if (full)
+  {
+    beats -= y;
+
+    beats = beats * 100;
+
+    y = beats;
+
+    str.append(".");
+
+    if (y < 10)
+      str.append("0");
+
+    str.append(tr("%1").arg(y));
+  }
+
+  return str;
+}
+
 void ClockWindow::timerEvent(QTimerEvent *event)
 {
   if (event->timerId() == m_timerId)
   {
-    float beats = getBeatTime();
-
-    m_trayIcon->setToolTip(tr("@%1").arg(beats));
-    m_lcd->display((double)beats);
+    QString beats = getBeatTimeString(true);
+    m_trayIcon->setToolTip(beats);
+    m_beatTime->setText(tr("<h1>%1</h1>").arg(beats));
   }
 }
 

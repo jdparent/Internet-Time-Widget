@@ -23,6 +23,7 @@ public:
   void setVisible(bool visible);
 
   float getBeatTime();
+  QString getBeatTimeString(bool full = false);
 
 protected:
   void closeEvent(QCloseEvent *event);
@@ -39,7 +40,7 @@ private:
   QAction *m_restoreAction;
   QAction *m_quitAction;
 
-  QLCDNumber *m_lcd;
+  QLabel *m_beatTime;
 
   QSystemTrayIcon *m_trayIcon;
   QMenu *m_trayIconMenu;
